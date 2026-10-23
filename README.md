@@ -1,50 +1,51 @@
-# CampusFlow – College Management System
+# College Management System
 
-CampusFlow is a web-based college management system designed to manage college activities through a simple and user-friendly interface.
+A simple college management web application built with HTML, CSS, JavaScript, Node.js, Express and MongoDB.
 
-### Features
+## Features
+- Dashboard with student and course totals
+- Add, view, search, edit and delete student records
+- Add, view, edit and delete course records
+- MongoDB database connection using Mongoose
+- Responsive interface for desktop and mobile
+- Basic validation and duplicate roll-number/course-code handling
 
-* Secure Admin Login and Authentication
-* Dashboard with College Statistics
-* Student Management
-* Course Management
-* Attendance Management
-* Student Results Management
-* Notice Management
-* Student Complaint Management and Tracking
+## Requirements
+- Node.js and npm
+- MongoDB installed and running locally, or a MongoDB Atlas connection string
 
-### Technologies Used
-
-* **Frontend:** HTML, CSS, JavaScript
-* **Backend:** Node.js, Express.js
-* **Database:** MongoDB
-* **Authentication:** JSON Web Tokens (JWT), bcryptjs
-
-### Installation and Setup
-
-1. Clone this repository.
-2. Install dependencies:
-
+## Run locally
+1. Open this project folder in a terminal.
+2. Install packages:
    ```bash
    npm install
    ```
-3. Create a `.env` file and configure the following variables:
-
-   ```env
-   PORT=5000
-   MONGODB_URI=mongodb://127.0.0.1:27017/collegeManagementDB
-   JWT_SECRET=your_secure_jwt_secret
-   ADMIN_SETUP_KEY=your_secure_setup_key
-   ALLOW_DEV_BYPASS=false
-   ```
-4. Start MongoDB.
+3. Create a `.env` file by copying `.env.example`.
+4. If needed, update `MONGODB_URI` in `.env`.
 5. Start the application:
-
    ```bash
    npm start
    ```
 6. Open `http://localhost:5000` in your browser.
 
-### Note
+## Project structure
+```text
+college-management-system/
+├── public/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── app.js
+│   └── index.html
+├── .env.example
+├── .gitignore
+├── package.json
+├── README.md
+└── server.js
+```
 
-Keep your `.env` file and secret keys private. Never upload passwords, tokens, or other sensitive credentials to GitHub.
+## Database
+The application uses a MongoDB database named `collegeManagementDB` by default. It creates `students` and `courses` collections when records are added.
+
+## Note
+This is a college project starter. Before using it for real college data, add authentication, role-based permissions, stronger validation, and production security settings. Do not upload your real `.env` file or database credentials to GitHub.
