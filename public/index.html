@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CampusFlow | College Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <div id="loginScreen" class="login-screen hidden">
+      <form id="loginForm" class="login-card">
+        <div class="brand-logo">C</div>
+
+        <h1>Welcome back!</h1>
+        <p>Sign in to manage your college.</p>
+
+        <label for="loginEmail">Email address</label>
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="admin@college.com"
+          autocomplete="username"
+          required
+        />
+
+        <label for="loginPassword">Password</label>
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        />
+
+        <button class="btn btn-primary full-width" type="submit">
+          Sign In
+        </button>
+
+        <p id="loginMessage" class="form-message" role="alert"></p>
+      </form>
+    </div>
+
+    <div class="app-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-logo">C</div>
+
+          <div>
+            <h2>CampusFlow</h2>
+            <span>College Management</span>
+          </div>
+        </div>
+
+        <div class="nav-heading">WORKSPACE</div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-section="dashboard">
+            <span class="nav-icon">▦</span>
+            Dashboard
+          </button>
+
+          <button class="nav-item" data-section="students">
+            <span class="nav-icon">♙</span>
+            Students
+          </button>
+
+          <button class="nav-item" data-section="courses">
+            <span class="nav-icon">▤</span>
+            Courses
+          </button>
+
+          <button class="nav-item" data-section="attendance">
+            <span class="nav-icon">◷</span>
+            Attendance
+          </button>
+
+          <button class="nav-item" data-section="results">
+            <span class="nav-icon">▧</span>
+            Marks & Results
+          </button>
+
+          <button class="nav-item" data-section="notices">
+            <span class="nav-icon">▣</span>
+            Notice Board
+          </button>
+
+          <button class="nav-item" data-section="complaints">
+            <span class="nav-icon">✉</span>
+            Complaints
+          </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="profile-avatar">A</div>
+
+          <div class="profile-info">
+            <strong id="adminName">Administrator</strong>
+            <span id="adminRole">College Admin</span>
+          </div>
+
+          <button
+            id="logoutButton"
+            class="logout-button"
+            title="Sign out"
+            aria-label="Sign out"
+          >
+            ↪
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button
+              id="menuButton"
+              class="icon-button mobile-menu"
+              aria-label="Open navigation"
+            >
+              ☰
+            </button>
+
+            <div>
+              <h1 id="pageTitle">Dashboard</h1>
+              <p id="pageSubtitle">Here's what's happening at your college.</p>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <div class="today-badge">
+              <span>◷</span>
+              <span id="currentDate"></span>
+            </div>
+
+            <div class="top-avatar">A</div>
+          </div>
+        </header>
+
+        <div
+          id="globalMessage"
+          class="global-message hidden"
+          role="status"
+        ></div>
+
+        <!-- DASHBOARD -->
+
+        <section class="page" id="dashboard">
+          <div class="welcome-banner">
+            <div>
+              <span class="eyebrow">YOUR COLLEGE AT A GLANCE</span>
+
+              <h2>Welcome to CampusFlow 👋</h2>
+
+              <p>
+                Manage students, academics, and daily college activities in one
+                place.
+              </p>
+            </div>
+
+            <div class="welcome-decoration">✦</div>
+          </div>
+
+          <div class="section-heading">
+            <div>
+              <h2>Overview</h2>
+              <p>A quick summary of your college.</p>
+            </div>
+
+            <button id="refreshDashboard" class="btn btn-secondary">
+              ↻ Refresh
+            </button>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total Students</span>
+                <div class="stat-icon purple">♙</div>
+              </div>
+
+              <h3 id="totalStudents">0</h3>
+              <p class="stat-note">Registered students</p>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total Courses</span>
+                <div class="stat-icon blue">▤</div>
+              </div>
+
+              <h3 id="totalCourses">0</h3>
+              <p class="stat-note">Available courses</p>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Active Students</span>
+                <div class="stat-icon green">✓</div>
+              </div>
+
+              <h3 id="activeStudents">0</h3>
+              <p class="stat-note">Currently active</p>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total Complaints</span>
+                <div class="stat-icon orange">✉</div>
+              </div>
+
+              <h3 id="totalComplaints">0</h3>
+              <p class="stat-note">Registered complaints</p>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Quick Actions</h3>
+                  <p>Shortcuts to common tasks.</p>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <button class="quick-action" data-open="students">
+                  <span class="quick-icon purple">＋</span>
+                  <span>
+                    <strong>Add Student</strong>
+                    <small>Register a student</small>
+                  </span>
+                  <span class="action-arrow">→</span>
+                </button>
+
+                <button class="quick-action" data-open="courses">
+                  <span class="quick-icon blue">▤</span>
+                  <span>
+                    <strong>Add Course</strong>
+                    <small>Create a new course</small>
+                  </span>
+                  <span class="action-arrow">→</span>
+                </button>
+
+                <button class="quick-action" data-open="attendance">
+                  <span class="quick-icon green">✓</span>
+                  <span>
+                    <strong>Mark Attendance</strong>
+                    <small>Record student attendance</small>
+                  </span>
+                  <span class="action-arrow">→</span>
+                </button>
+
+                <button class="quick-action" data-open="notices">
+                  <span class="quick-icon orange">▣</span>
+                  <span>
+                    <strong>Publish Notice</strong>
+                    <small>Share a college announcement</small>
+                  </span>
+                  <span class="action-arrow">→</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Recent Notices</h3>
+                  <p>Latest college announcements.</p>
+                </div>
+
+                <button class="text-button" data-open="notices">
+                  View all →
+                </button>
+              </div>
+
+              <div id="dashboardNotices" class="notice-preview">
+                <p class="empty-state">Loading notices...</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- STUDENTS -->
+
+        <section class="page hidden" id="students">
+          <div class="section-heading">
+            <div>
+              <h2>Student Management</h2>
+              <p>Register and manage student records.</p>
+            </div>
+
+            <button id="exportStudents" class="btn btn-primary">
+              ↓ Export CSV
+            </button>
+          </div>
+
+          <article class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Add New Student</h3>
+                <p>Enter the student's details below.</p>
+              </div>
+            </div>
+
+            <form id="studentForm" class="form-grid">
+              <div class="form-group">
+                <label>Full Name *</label>
+                <input name="name" placeholder="Student name" required />
+              </div>
+
+              <div class="form-group">
+                <label>Email Address *</label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="student@example.com"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input name="phone" type="tel" placeholder="Phone number" />
+              </div>
+
+              <div class="form-group">
+                <label>Enrollment Number</label>
+                <input
+                  name="enrollmentNumber"
+                  placeholder="Enrollment number"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Course</label>
+                <input name="course" placeholder="Course name" />
+              </div>
+
+              <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                  + Add Student
+                </button>
+
+                <button class="btn btn-secondary" type="reset">Clear</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Student Directory</h3>
+                <p>Search and manage registered students.</p>
+              </div>
+
+              <input
+                id="studentSearch"
+                class="search-input"
+                placeholder="⌕ Search students..."
+              />
+            </div>
+
+            <div id="studentsList" class="record-list">
+              <p class="empty-state">Loading students...</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- COURSES -->
+
+        <section class="page hidden" id="courses">
+          <div class="section-heading">
+            <div>
+              <h2>Course Management</h2>
+              <p>Manage courses offered by your college.</p>
+            </div>
+          </div>
+
+          <article class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Create a Course</h3>
+                <p>Add a new course to your college records.</p>
+              </div>
+            </div>
+
+            <form id="courseForm" class="form-grid">
+              <div class="form-group">
+                <label>Course Name *</label>
+                <input
+                  name="name"
+                  placeholder="e.g. Information Technology"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Course Code *</label>
+                <input name="code" placeholder="e.g. IT101" required />
+              </div>
+
+              <div class="form-group">
+                <label>Duration</label>
+                <input name="duration" placeholder="e.g. 4 Years" />
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                  + Add Course
+                </button>
+
+                <button class="btn btn-secondary" type="reset">Clear</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Available Courses</h3>
+                <p>All registered courses.</p>
+              </div>
+            </div>
+
+            <div id="coursesList" class="record-list">
+              <p class="empty-state">Loading courses...</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- ATTENDANCE -->
+
+        <section class="page hidden" id="attendance">
+          <div class="section-heading">
+            <div>
+              <h2>Attendance Management</h2>
+              <p>Record and review student attendance.</p>
+            </div>
+          </div>
+
+          <article class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Record Attendance</h3>
+                <p>Select a student and record their attendance.</p>
+              </div>
+            </div>
+
+            <form id="attendanceForm" class="form-grid">
+              <div class="form-group">
+                <label>Student *</label>
+                <select id="attendanceStudent" name="studentId" required>
+                  <option value="">Select student</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Date *</label>
+                <input id="attendanceDate" name="date" type="date" required />
+              </div>
+
+              <div class="form-group">
+                <label>Status *</label>
+                <select name="status" required>
+                  <option value="Present">Present</option>
+                  <option value="Absent">Absent</option>
+                  <option value="Late">Late</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                  Save Attendance
+                </button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Attendance Records</h3>
+                <p>Previously recorded attendance.</p>
+              </div>
+            </div>
+
+            <div id="attendanceList" class="record-list">
+              <p class="empty-state">Attendance records will appear here.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- RESULTS -->
+
+        <section class="page hidden" id="results">
+          <div class="section-heading">
+            <div>
+              <h2>Marks & Results</h2>
+              <p>Maintain student examination records.</p>
+            </div>
+          </div>
+
+          <article class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Add Examination Result</h3>
+                <p>Enter the student's subject marks.</p>
+              </div>
+            </div>
+
+            <form id="resultForm" class="form-grid">
+              <div class="form-group">
+                <label>Student *</label>
+                <select id="resultStudent" name="studentId" required>
+                  <option value="">Select student</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Subject *</label>
+                <input name="subject" placeholder="Subject name" required />
+              </div>
+
+              <div class="form-group">
+                <label>Marks Obtained *</label>
+                <input
+                  name="marks"
+                  type="number"
+                  min="0"
+                  placeholder="e.g. 85"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Maximum Marks *</label>
+                <input
+                  name="maxMarks"
+                  type="number"
+                  min="1"
+                  value="100"
+                  required
+                />
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                  Save Result
+                </button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Examination Records</h3>
+                <p>Recorded student marks.</p>
+              </div>
+            </div>
+
+            <div id="resultsList" class="record-list">
+              <p class="empty-state">Results will appear here.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- NOTICES -->
+
+        <section class="page hidden" id="notices">
+          <div class="section-heading">
+            <div>
+              <h2>College Notice Board</h2>
+              <p>Publish important college announcements.</p>
+            </div>
+          </div>
+
+          <article class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Publish a Notice</h3>
+                <p>Share updates with students and faculty.</p>
+              </div>
+            </div>
+
+            <form id="noticeForm" class="form-grid">
+              <div class="form-group full-span">
+                <label>Notice Title *</label>
+                <input name="title" placeholder="Enter notice title" required />
+              </div>
+
+              <div class="form-group full-span">
+                <label>Notice Description *</label>
+                <textarea
+                  name="content"
+                  rows="4"
+                  placeholder="Write the announcement..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Audience</label>
+                <select name="audience">
+                  <option value="All">Everyone</option>
+                  <option value="Students">Students</option>
+                  <option value="Faculty">Faculty</option>
+                </select>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                  Publish Notice
+                </button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Published Notices</h3>
+                <p>College announcements.</p>
+              </div>
+            </div>
+
+            <div id="noticesList" class="record-list">
+              <p class="empty-state">Loading notices...</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- COMPLAINTS -->
+
+        <section class="page hidden" id="complaints">
+          <div class="section-heading">
+            <div>
+              <h2>Complaint Management</h2>
+              <p>Review complaints and track their resolution.</p>
+            </div>
+          </div>
+
+          <article class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Register a Complaint</h3>
+                <p>Submit a complaint and receive a tracking number.</p>
+              </div>
+            </div>
+
+            <form id="complaintForm" class="form-grid">
+              <div class="form-group">
+                <label>Student Name *</label>
+                <input
+                  name="studentName"
+                  placeholder="Your full name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Email Address *</label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Your email"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Category *</label>
+                <select name="category" required>
+                  <option value="Academic">Academic</option>
+                  <option value="Facilities">Facilities</option>
+                  <option value="Fees">Fees</option>
+                  <option value="Examination">Examination</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Priority</label>
+                <select name="priority">
+                  <option value="Low">Low</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+
+              <div class="form-group full-span">
+                <label>Complaint Subject *</label>
+                <input
+                  name="subject"
+                  placeholder="Short complaint title"
+                  required
+                />
+              </div>
+
+              <div class="form-group full-span">
+                <label>Description *</label>
+                <textarea
+                  name="description"
+                  rows="4"
+                  placeholder="Describe your complaint..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">
+                  Submit Complaint
+                </button>
+              </div>
+            </form>
+
+            <div
+              id="registrationResult"
+              class="result-message"
+              role="status"
+            ></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Track a Complaint</h3>
+                <p>Check the status of a submitted complaint.</p>
+              </div>
+            </div>
+
+            <form id="trackForm" class="inline-form">
+              <input name="ticketId" placeholder="Enter ticket ID" required />
+              <button class="btn btn-primary" type="submit">Track</button>
+            </form>
+
+            <div id="trackingResult" class="result-message"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>All Complaints</h3>
+                <p>Manage and update complaint status.</p>
+              </div>
+            </div>
+
+            <div id="complaintsList" class="record-list">
+              <p class="empty-state">Loading complaints...</p>
+            </div>
+          </article>
+        </section>
+
+        <footer class="footer">
+          <span>CampusFlow College Management System</span>
+          <span>Made for better campus management</span>
+        </footer>
+      </main>
+    </div>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>
